@@ -1,4 +1,4 @@
-
+Ôªø
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace laba1
     
     public partial class Form1 : Form
     {
-        TelevisionCollection tvCollection = new TelevisionCollection();
+       
 
 
         public Form1()
@@ -21,16 +21,31 @@ namespace laba1
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            
+            TelevisionCollection tvCollection = new TelevisionCollection();
             string fileName = "INFO.TXT";
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split(',');
+                    Television tv = new Television
+                    {
+                        Brand = parts[0].Trim(),
+                        Price = decimal.Parse(parts[1].Trim().Replace("‚Ç¥", "")),
+                        Manufacturer = parts[2].Trim()
+
+                    };
+                    tvCollection.Televisions.Add(tv);
+                }
+            }
             if (textBox1.Text == "" || textBox2.Text == "" || textBox2.Text == "")
             {
-                MessageBox.Show("¬‚Â‰≥Ú¸ ‰‡Ì≥!");
+                MessageBox.Show("–í–≤–µ–¥—ñ—Ç—å –¥–∞–Ω—ñ!");
             }
             else
             {
-                tvCollection.Televisions.Add(new Television { Brand = textBox1.Text, Price = double.Parse(textBox2.Text), Manufacturer = textBox3.Text });
+                tvCollection.Televisions.Add(new Television { Brand = textBox1.Text, Price = decimal.Parse(textBox2.Text), Manufacturer = textBox3.Text });
                 using (StreamWriter writer = new StreamWriter(fileName))
                 {
                     foreach (Television tv in tvCollection.Televisions)
@@ -46,7 +61,7 @@ namespace laba1
             TelevisionCollection tvCollection = new TelevisionCollection();
             Television mostExpensiveTv = null;
 
-           double maxPrice = 0;
+            decimal maxPrice = 0;
 
 
             foreach (Television tv in tvCollection.Televisions)
