@@ -33,7 +33,7 @@ namespace laba1
                     {
                         Brand = parts[0].Trim(),
                         Price = decimal.Parse(parts[1].Trim().Replace("₴", "")),
-                        Manufacturer = parts[2].Trim()
+                        Manufacturer = parts[3].Trim()
 
                     };
                     tvCollection.Televisions.Add(tv);
@@ -59,6 +59,23 @@ namespace laba1
         private void button2_Click(object sender, EventArgs e)
         {
             TelevisionCollection tvCollection = new TelevisionCollection();
+            string fileName = "INFO.TXT";
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split(',');
+                    Television tv = new Television
+                    {
+                        Brand = parts[0].Trim(),
+                        Price = decimal.Parse(parts[1].Trim().Replace("₴", "")),
+                        Manufacturer = parts[3].Trim()
+
+                    };
+                    tvCollection.Televisions.Add(tv);
+                }
+            }
             Television mostExpensiveTv = null;
 
             decimal maxPrice = 0;
@@ -71,7 +88,11 @@ namespace laba1
                     maxPrice = tv.Price;
                     mostExpensiveTv = tv;
                 }
+
             }
+            label7.Text = mostExpensiveTv.Brand;
+            label8.Text = mostExpensiveTv.Price.ToString()+ " ₴";
+            label9.Text = mostExpensiveTv.Manufacturer;
         }
     }
 }
